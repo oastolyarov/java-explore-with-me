@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.xml.bind.ValidationException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -29,7 +30,7 @@ public class RequestServiceImpl implements RequestService {
 
         return requestRepository.getUserRequests(userId).stream()
                 .map(RequestMapper::toRequestDto)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override

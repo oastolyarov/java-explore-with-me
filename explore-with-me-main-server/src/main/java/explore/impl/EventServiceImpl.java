@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -189,7 +190,7 @@ public class EventServiceImpl implements EventService {
         List<EventDto> events = allEvents.stream()
                 .filter(s -> s.getInitiator().getId() == userId)
                 .map(EventMapper::toEventDto)
-                .toList();
+                .collect(Collectors.toList());
 
         return events;
     }
@@ -265,7 +266,7 @@ public class EventServiceImpl implements EventService {
 
         List<Request> requests = requestRepository.getRequestByUser(userId, eventId);
 
-        return requests.stream().map(RequestMapper::toRequestDto).toList();
+        return requests.stream().map(RequestMapper::toRequestDto).collect(Collectors.toList());
     }
 
     @Override
@@ -303,7 +304,7 @@ public class EventServiceImpl implements EventService {
 
         return eventRepository.findAll().stream()
                 .map(EventMapper::toEventSnortDto)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -328,7 +329,9 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventDto> getCompilation(Boolean pinned, Integer from, Integer size) {
-        List<EventDto> allEventList = eventRepository.findAll().stream().map(EventMapper::toEventDto).toList();
+        List<EventDto> allEventList = eventRepository.findAll().stream()
+                .map(EventMapper::toEventDto)
+                .collect(Collectors.toList());
         List<EventDto> eventList = new ArrayList<>();
 
         if (allEventList.size() < from) {

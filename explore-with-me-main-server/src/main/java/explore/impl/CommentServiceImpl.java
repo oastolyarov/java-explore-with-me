@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.xml.bind.ValidationException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -41,7 +42,7 @@ public class CommentServiceImpl implements CommentService {
         List<CommentShortDto> comments = commentRepository.getCommentOfEvent(eventId).stream()
                 .map(CommentMapper::toCommentShortDto)
                 .sorted((o1, o2) -> o2.getDateCreate().compareTo(o1.getDateCreate()))
-                .toList();
+                .collect(Collectors.toList());
 
         return comments;
     }

@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -38,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryDto> getAll(Integer from, Integer size) {
         List<CategoryDto> categories = categoryRepository.findAll().stream()
                 .map(CategoryMapper::toCategoryDto)
-                .toList();
+                .collect(Collectors.toList());
         return categories;
     }
 
