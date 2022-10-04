@@ -4,3 +4,6 @@
 ## ER-diagram
 main_server https://github.com/oastolyarov/java-explore-with-me/blob/main/main_server_final.pdf
 stat_server https://github.com/oastolyarov/java-explore-with-me/blob/main/stat_server_final.pdf
+
+
+Ссылка на PR https://github.com/oastolyarov/java-explore-with-me/pull/2
