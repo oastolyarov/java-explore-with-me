@@ -1,6 +1,5 @@
 package explore.model.dto;
 
-import explore.model.Event;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

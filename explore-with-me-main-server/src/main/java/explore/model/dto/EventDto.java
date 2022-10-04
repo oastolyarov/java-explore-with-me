@@ -1,6 +1,5 @@
 package explore.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import explore.model.Category;
 import explore.model.Location;
 import explore.model.State;
@@ -9,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

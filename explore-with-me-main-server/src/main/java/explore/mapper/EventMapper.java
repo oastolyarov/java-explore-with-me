@@ -6,7 +6,6 @@ import explore.model.State;
 import explore.model.User;
 import explore.model.dto.EventCreatingDto;
 import explore.model.dto.EventDto;
-import explore.model.dto.EventEditedDto;
 import explore.model.dto.EventShortDto;
 
 import java.time.LocalDateTime;

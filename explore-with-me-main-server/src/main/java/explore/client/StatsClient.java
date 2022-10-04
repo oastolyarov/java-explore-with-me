@@ -1,7 +1,5 @@
 package explore.client;
 
-
-import explore.client.BaseClient;
 import explore.model.Stats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

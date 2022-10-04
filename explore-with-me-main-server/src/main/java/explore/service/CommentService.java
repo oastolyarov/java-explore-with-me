@@ -2,7 +2,6 @@ package explore.service;
 
 import explore.model.dto.CommentDto;
 import explore.model.dto.CommentShortDto;
-import org.springframework.web.bind.annotation.*;
 
 import javax.xml.bind.ValidationException;
 import java.util.List;

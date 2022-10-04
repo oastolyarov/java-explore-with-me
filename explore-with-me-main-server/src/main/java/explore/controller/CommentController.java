@@ -2,9 +2,7 @@ package explore.controller;
 
 import explore.model.dto.CommentDto;
 import explore.model.dto.CommentShortDto;
-import explore.model.dto.UserDto;
 import explore.service.CommentService;
-import explore.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
