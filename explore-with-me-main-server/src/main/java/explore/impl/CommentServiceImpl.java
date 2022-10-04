@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.xml.bind.ValidationException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +31,7 @@ public class CommentServiceImpl implements CommentService {
     public void deleteComment(Integer userId, Integer commentId, Integer id) throws ValidationException {
         Comment comment = commentRepository.findById(commentId).get();
 
-        if (comment.getCommentator().getId() != id) {
+        if (!Objects.equals(comment.getCommentator().getId(), id)) {
             throw new ValidationException("Комментарий должен принадлежать пользователю.");
         }
 

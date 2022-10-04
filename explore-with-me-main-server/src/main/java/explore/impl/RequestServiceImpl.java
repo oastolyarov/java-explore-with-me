@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.xml.bind.ValidationException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,7 +49,7 @@ public class RequestServiceImpl implements RequestService {
     public RequestDto cancelRequest(Integer userId, Integer requestId) throws ValidationException {
         Request request = requestRepository.findById(requestId).get();
 
-        if (request.getRequester().getId() != userId) {
+        if (!Objects.equals(request.getRequester().getId(), userId)) {
             throw new ValidationException("Запрос с id "
                     + requestId
                     + " не принадлежит пользователю с id "

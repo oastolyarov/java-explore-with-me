@@ -188,7 +188,7 @@ public class EventServiceImpl implements EventService {
         List<Event> allEvents = eventRepository.findAll();
 
         List<EventDto> events = allEvents.stream()
-                .filter(s -> s.getInitiator().getId() == userId)
+                .filter(s -> Objects.equals(s.getInitiator().getId(), userId))
                 .map(EventMapper::toEventDto)
                 .collect(Collectors.toList());
 
@@ -253,7 +253,8 @@ public class EventServiceImpl implements EventService {
     public void closeEventByUser(Integer userId, Integer eventId) throws ValidationException {
         Event event = (Event) checkOptional(eventRepository.findById(eventId));
 
-        if (event.getInitiator().getId() != userId) {
+        assert event != null;
+        if (!Objects.equals(event.getInitiator().getId(), userId)) {
             throw new ValidationException(String
                     .format("Событие id %d не принадлежит пользователю с id %d", eventId, userId));
         }
