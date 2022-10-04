@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -32,11 +33,11 @@ public class StatServiceImpl implements StatService {
         if (uris == null && unique == null) {
             return repository.getStat(start, end).stream()
                     .map(Optional::get)
-                    .toList();
+                    .collect(Collectors.toList());
         } else if (uris == null) {
             return repository.getStatUniq(start, end).stream()
                     .map(Optional::get)
-                    .toList();
+                    .collect(Collectors.toList());
         } else if (unique == null) {
             List<StatsView> statsViews = new ArrayList<>();
             for (String s : uris) {
