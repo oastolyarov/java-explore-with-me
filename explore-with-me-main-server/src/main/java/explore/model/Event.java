@@ -35,9 +35,10 @@ public class Event {
     private LocalDateTime publishedOn;
     @Column(name = "date_event")
     private LocalDateTime eventDate;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "location_id")
-    private Location location;
+    @Column(name = "lat")
+    private Double lat;
+    @Column(name = "lon")
+    private Double lon;
     @Column(name = "paid")
     private Boolean paid;
     private Integer participantLimit;

@@ -22,7 +22,8 @@ public class EventDto {
     private String createdOn;
     private String publishedOn;
     private String eventDate;
-    private Location location;
+    private Double lat;
+    private Double lon;
     private Boolean paid;
     private Integer participantLimit;
     private State state;

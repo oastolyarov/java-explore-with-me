@@ -65,14 +65,13 @@ public class EventServiceImpl implements EventService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime eventDateTime = LocalDateTime.parse(eventEditedDto.getEventDate(), formatter);
 
-        Integer locationId = locationRepository.save(eventEditedDto.getLocation()).getId();
-
         eventRepository.updateEvent(event.getTitle(),
                 eventEditedDto.getCategory(),
                 eventEditedDto.getDescription(),
                 event.getAnnotation(),
                 eventDateTime,
-                locationId,
+                eventEditedDto.getLat(),
+                eventEditedDto.getLon(),
                 eventEditedDto.getPaid(),
                 eventEditedDto.getParticipantLimit(),
                 eventEditedDto.getRequestModeration(),
@@ -220,7 +219,8 @@ public class EventServiceImpl implements EventService {
                 intermediateEvent.getCreatedOn(),
                 intermediateEvent.getPublishedOn(),
                 intermediateEvent.getEventDate(),
-                intermediateEvent.getLocation(),
+                intermediateEvent.getLat(),
+                intermediateEvent.getLon(),
                 intermediateEvent.getPaid(),
                 intermediateEvent.getParticipantLimit(),
                 intermediateEvent.getState(),
