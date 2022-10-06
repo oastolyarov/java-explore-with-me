@@ -16,7 +16,8 @@ public class EventCreatingDto {
     private Integer category;
     private String annotation;
     private String eventDate;
-    private Location location;
+    private Double lat;
+    private Double lon;
     private Boolean paid;
     private Integer participantLimit;
     private Boolean requestModeration;

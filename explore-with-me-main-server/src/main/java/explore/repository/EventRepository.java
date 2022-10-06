@@ -18,20 +18,20 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
     @Modifying
     @Query("update Event e set e.title = ?1, e.category = ?2," +
             "e.description = ?3, e.annotation = ?4, e.eventDate = ?5," +
-            "e.location.id = ?6, e.paid = ?7, e.participantLimit = ?8," +
-            "e.requestModeration = ?9 where e.id = ?10")
+            "e.lat = ?6, e.lon = ?7, e.paid = ?8, e.participantLimit = ?9," +
+            "e.requestModeration = ?10 where e.id = ?11")
     void updateEvent(String title, Integer id, String description, String annotation,
-                     LocalDateTime eventDate, Integer locationId, Boolean paid,
+                     LocalDateTime eventDate, Double lat, Double lon, Boolean paid,
                      Integer participantLimit, Boolean requestModeration, Integer eventId);
 
     @Transactional
     @Modifying
     @Query("update Event e set e.title = ?1, e.description = ?2, e.category = ?3, e.annotation = ?4," +
-            "e.initiator = ?5, e.createdOn = ?6, e.publishedOn = ?7, e.eventDate = ?8, e.location = ?9," +
-            "e.paid = ?10, e.participantLimit = ?11, e.state = ?12, e.requestModeration = ?13" +
-            "where e.id = ?14")
+            "e.initiator = ?5, e.createdOn = ?6, e.publishedOn = ?7, e.eventDate = ?8, e.lat = ?9, e.lon = ?10, " +
+            "e.paid = ?11, e.participantLimit = ?12, e.state = ?13, e.requestModeration = ?14" +
+            "where e.id = ?15")
     void updateEventByUser(String title, String description, Category category, String annotation,
                            User initiator, LocalDateTime createdOn, LocalDateTime publishedOn,
-                           LocalDateTime eventDate, Location location, Boolean paid, Integer participantLimit,
+                           LocalDateTime eventDate, Double lat, Double lon, Boolean paid, Integer participantLimit,
                            State state, Boolean requestModeration, Integer eventId);
 }
