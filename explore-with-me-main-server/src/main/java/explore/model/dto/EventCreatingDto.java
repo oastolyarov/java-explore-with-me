@@ -1,6 +1,5 @@
 package explore.model.dto;
 
-import explore.model.Location;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,6 @@
 package explore.model.dto;
 
 import explore.model.Category;
-import explore.model.Location;
 import explore.model.State;
 import explore.model.User;
 import lombok.AllArgsConstructor;
