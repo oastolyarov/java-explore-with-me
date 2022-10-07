@@ -31,7 +31,6 @@ public class EventServiceImpl implements EventService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final RequestRepository requestRepository;
-    private final LocationRepository locationRepository;
     private final CompilationRepository compilationRepository;
     private final JdbcTemplate jdbcTemplate;
     private final StatsClient client;
