@@ -1,5 +1,6 @@
 package explore.service;
 
+import explore.model.Event;
 import explore.model.dto.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,8 +14,9 @@ public interface EventService {
                                   String categories,
                                   LocalDateTime rangeStart,
                                   LocalDateTime rangeEnd,
+                                  String sort,
                                   Integer from,
-                                  Integer size);
+                                  Integer size) throws ValidationException;
 
     EventDto changeEventByAdmin(Integer eventId, EventEditedDto eventEditedDto);
 
@@ -36,9 +38,9 @@ public interface EventService {
 
     void pinCompilation(Integer compId);
 
-    List<EventDto> getAllByUser(Integer userId,
-                                Integer from,
-                                Integer size);
+    List<Event> getAllByUser(Integer userId,
+                             Integer from,
+                             Integer size);
 
     EventDto changeEventByUser(Integer userId, EventDto eventDto) throws ValidationException;
 

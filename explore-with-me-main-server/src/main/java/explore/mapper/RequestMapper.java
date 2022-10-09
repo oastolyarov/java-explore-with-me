@@ -2,7 +2,9 @@ package explore.mapper;
 
 import explore.model.Request;
 import explore.model.dto.RequestDto;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RequestMapper {
     public static RequestDto toRequestDto(Request request) {
         return new RequestDto(request.getId(),

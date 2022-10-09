@@ -29,11 +29,12 @@ public class AdminEventController {
                                          @RequestParam String categories,
                                          @RequestParam LocalDateTime rangeStart,
                                          @RequestParam LocalDateTime rangeEnd,
+                                         @RequestParam(required = false) String sort,
                                          @RequestParam(defaultValue = "0") Integer from,
-                                         @RequestParam(defaultValue = "10") Integer size) {
+                                         @RequestParam(defaultValue = "10") Integer size) throws ValidationException {
         log.debug("Администратор: запрос на просмотр всех событий.");
 
-        return eventService.getAllByParams(userId, states, categories, rangeStart, rangeEnd, from, size);
+        return eventService.getAllByParams(userId, states, categories, rangeStart, rangeEnd, sort, from, size);
     }
 
     @PutMapping("/admin/events/{eventId}")
@@ -46,14 +47,14 @@ public class AdminEventController {
 
     @PatchMapping("/admin/events/{eventId}/publish")
     public EventDto publishEvent(@PathVariable Integer eventId) throws ValidationException {
-        log.debug("Администратор: публикация события.");
+        log.debug("Администратор: публикация события с id  " + eventId);
 
         return eventService.publishEvent(eventId);
     }
 
     @PatchMapping("/admin/events/{eventId}/reject")
     public EventDto rejectEvent(@PathVariable Integer eventId) throws ValidationException {
-        log.debug("Администратор: отклонение события.");
+        log.debug("Администратор: отклонение события с id  " + eventId);
 
         return eventService.rejectEvent(eventId);
     }
@@ -94,14 +95,14 @@ public class AdminEventController {
 
     @DeleteMapping("/admin/compilations/{compId}/pin")
     public void unpinCompilation(@PathVariable Integer compId) {
-        log.debug("Администратор: запрос на открепление подборки.");
+        log.debug("Администратор: запрос на открепление подборки с id " + compId);
 
         eventService.unpinCompilation(compId);
     }
 
     @PatchMapping("/admin/compilations/{compId}/pin")
     public void pinCompilation(@PathVariable Integer compId) {
-        log.debug("Администратор: запрос на закрепление подборки.");
+        log.debug("Администратор: запрос на закрепление подборки с id " + compId);
 
         eventService.pinCompilation(compId);
     }

@@ -7,10 +7,12 @@ import explore.model.User;
 import explore.model.dto.EventCreatingDto;
 import explore.model.dto.EventDto;
 import explore.model.dto.EventShortDto;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Component
 public class EventMapper {
 
     public static EventDto toEventDto(Event event) {

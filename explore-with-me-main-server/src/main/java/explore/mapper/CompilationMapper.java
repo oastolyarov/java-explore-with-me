@@ -4,9 +4,11 @@ import explore.model.Compilation;
 import explore.model.Event;
 import explore.model.dto.CompilationDto;
 import explore.model.dto.CompilationShortDto;
+import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
+@Component
 public class CompilationMapper {
     public static CompilationDto toCompilationDto(Compilation compilation) {
         return new CompilationDto(compilation.getId(),

@@ -2,13 +2,14 @@ package explore.repository;
 
 import explore.model.*;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
-public interface EventRepository extends JpaRepository<Event, Integer> {
+public interface EventRepository extends JpaRepository<Event, Integer>, JpaSpecificationExecutor {
     @Transactional
     @Modifying
     @Query("update Event e set e.state = ?1 where e.id = ?2")

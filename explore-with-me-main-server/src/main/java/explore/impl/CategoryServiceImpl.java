@@ -6,6 +6,8 @@ import explore.model.dto.CategoryDto;
 import explore.repository.CategoryRepository;
 import explore.service.CategoryService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,10 +39,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDto> getAll(Integer from, Integer size) {
-        List<CategoryDto> categories = categoryRepository.findAll().stream()
+        Pageable page = PageRequest.of(from, size);
+
+        return categoryRepository.findAll(page).stream()
                 .map(CategoryMapper::toCategoryDto)
                 .collect(Collectors.toList());
-        return categories;
     }
 
     @Override
