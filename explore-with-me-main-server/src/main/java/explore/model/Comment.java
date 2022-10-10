@@ -22,10 +22,10 @@ public class Comment {
     @JoinColumn(name = "event_id")
     private Event event;
     @ManyToOne
-    @JoinColumn(name = "commentator_id")
+    @JoinColumn(name = "author_id")
     private User commentator;
-    @Column(name = "date_create")
+    @Column(name = "created_date")
     private LocalDateTime dateCreate;
-    @Column(name = "isPublished")
+    @Column(name = "is_published")
     private Boolean isPublished;
 }

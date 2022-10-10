@@ -3,7 +3,6 @@ package explore.impl;
 import explore.mapper.CommentMapper;
 import explore.model.Comment;
 import explore.model.dto.CommentDto;
-import explore.model.dto.CommentShortDto;
 import explore.repository.CommentRepository;
 import explore.service.CommentService;
 import lombok.AllArgsConstructor;
@@ -21,10 +20,11 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
 
     @Override
-    public CommentDto setComment(Integer eventId, CommentDto commentDto, Integer userId) {
-        Comment comment = commentRepository.save(CommentMapper.toComment(commentDto));
+    public Comment setComment(Integer eventId, Comment comment, Integer userId) {
 
-        return CommentMapper.toCommentDto(comment);
+        CommentDto commentDto = CommentMapper.toCommentDto(comment);
+
+        return commentRepository.save(CommentMapper.toComment(commentDto));
     }
 
     @Override
@@ -39,13 +39,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentShortDto> getCommentOfEvent(Integer eventId) {
-        List<CommentShortDto> comments = commentRepository.getCommentOfEvent(eventId).stream()
-                .map(CommentMapper::toCommentShortDto)
+    public List<Comment> getEventComments(Integer eventId) {
+
+        return commentRepository.getCommentOfEvent(eventId).stream()
                 .sorted((o1, o2) -> o2.getDateCreate().compareTo(o1.getDateCreate()))
                 .collect(Collectors.toList());
-
-        return comments;
     }
 
     @Override
