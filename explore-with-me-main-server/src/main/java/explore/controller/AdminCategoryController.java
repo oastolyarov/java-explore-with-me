@@ -16,14 +16,14 @@ public class AdminCategoryController {
 
     @PatchMapping()
     public CategoryDto changeCategory(@RequestBody CategoryDto categoryDto) {
-        log.debug("Администратор: запрос на изменение категории.");
+        log.debug("Администратор: запрос на изменение категории с id " + categoryDto.getId());
 
         return categoryService.changeCategory(categoryDto);
     }
 
     @PostMapping()
     public CategoryDto addNewCategory(@RequestBody CategoryDto categoryDto) {
-        log.debug("Администратор: запрос на добавление новой категории.");
+        log.debug("Администратор: запрос на добавление новой категории + " + categoryDto.getName());
 
         return categoryService.addNewCategory(categoryDto);
     }

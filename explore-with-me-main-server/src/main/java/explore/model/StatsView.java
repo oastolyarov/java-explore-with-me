@@ -1,8 +1,10 @@
 package explore.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class StatsView {
     private String app;
     private String uri;

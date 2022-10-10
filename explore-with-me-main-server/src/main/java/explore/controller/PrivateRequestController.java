@@ -20,7 +20,7 @@ public class PrivateRequestController {
     @GetMapping("/users/{userId}/requests")
     public List<RequestDto> getUserRequests(@PathVariable Integer userId) {
 
-        log.debug("Приватный запрос на получение запросов пользователя.");
+        log.debug("Приватный запрос на получение запросов пользователя с userId " + userId);
 
         return requestService.getUserRequests(userId);
     }
@@ -28,7 +28,7 @@ public class PrivateRequestController {
     @PostMapping("/users/{userId}/requests")
     public RequestDto addRequest(@PathVariable Integer userId,
                                  @RequestParam Integer eventId) {
-        log.debug("Приватный запрос на добавление запроса на участие в событии.");
+        log.debug("Приватный запрос на добавление запроса на участие в событии id " + eventId);
 
         return requestService.addRequest(userId, eventId);
     }
@@ -36,7 +36,7 @@ public class PrivateRequestController {
     @PatchMapping("/users/{userId}/requests/{requestId}/cancel")
     public RequestDto cancelRequest(@PathVariable Integer userId,
                                     @PathVariable Integer requestId) throws ValidationException {
-        log.debug("Приватный запрос на удаление запроса на участие в событии.");
+        log.debug("Приватный запрос на удаление запроса на участие в событии, requestId " + requestId);
 
         return requestService.cancelRequest(userId, requestId);
     }

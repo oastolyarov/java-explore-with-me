@@ -1,6 +1,9 @@
 package explore.impl;
 
 import explore.client.StatsClient;
+import explore.exceptions.DataException;
+import explore.exceptions.EventNotFoundException;
+import explore.exceptions.UserIdNotValidException;
 import explore.mapper.CompilationMapper;
 import explore.mapper.EventMapper;
 import explore.mapper.RequestMapper;
@@ -9,6 +12,10 @@ import explore.model.dto.*;
 import explore.repository.*;
 import explore.service.EventService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +41,7 @@ public class EventServiceImpl implements EventService {
     private final CompilationRepository compilationRepository;
     private final JdbcTemplate jdbcTemplate;
     private final StatsClient client;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public List<EventDto> getAllByParams(Integer userId,
@@ -41,10 +49,27 @@ public class EventServiceImpl implements EventService {
                                          String categories,
                                          LocalDateTime rangeStart,
                                          LocalDateTime rangeEnd,
+                                         String sort,
                                          Integer from,
-                                         Integer size) {
+                                         Integer size) throws ValidationException {
 
-        return null;
+        if (sort == null) {
+            throw new RuntimeException("Не указана порядок сортировки.");
+        }
+
+        Pageable page;
+
+        if (sort.equals("EVENT_DATE")) {
+            page = PageRequest.of(from, size, Sort.by(Sort.Direction.ASC, "eventDate"));
+        } else if (sort.equals("VIEWS")) {
+            page = PageRequest.of(from, size, Sort.by(Sort.Direction.ASC, "views"));
+        } else {
+            throw new ValidationException("Не корректно указан порядок сортировки.");
+        }
+
+        return eventRepository.findAll(page).stream()
+                .map(EventMapper::toEventDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -52,16 +77,16 @@ public class EventServiceImpl implements EventService {
         Event event = (Event) checkOptional(eventRepository.findById(eventId));
 
         if (event == null) {
-            throw new NullPointerException("Событие с id " + eventId + " не найдено.");
+            throw new EventNotFoundException("Событие с id " + eventId + " не найдено.");
         }
 
         Category category = (Category) checkOptional(categoryRepository.findById(eventEditedDto.getCategory()));
 
         if (category == null) {
-            throw new NullPointerException("Категория с id " + eventEditedDto.getCategory() + " не найдена.");
+            throw new DataException("Категория с id " + eventEditedDto.getCategory() + " не найдена.");
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
         LocalDateTime eventDateTime = LocalDateTime.parse(eventEditedDto.getEventDate(), formatter);
 
         eventRepository.updateEvent(event.getTitle(),
@@ -87,11 +112,11 @@ public class EventServiceImpl implements EventService {
         Event event = (Event) checkOptional(eventRepository.findById(eventId));
 
         if (event == null) {
-            throw new NullPointerException("Событие не найдено.");
+            throw new EventNotFoundException("Событие не найдено.");
         }
 
         if (!event.getState().equals(State.PENDING)) {
-            throw new ValidationException("Событие должно быть в статусе PENDING");
+            throw new DataException("Событие должно быть в статусе PENDING");
         }
 
         Duration timeToEvent = Duration.between(event.getEventDate(), LocalDateTime.now());
@@ -112,11 +137,11 @@ public class EventServiceImpl implements EventService {
         Event event = (Event) checkOptional(eventRepository.findById(eventId));
 
         if (event == null) {
-            throw new NullPointerException("Событие не найдено.");
+            throw new EventNotFoundException("Событие не найдено.");
         }
 
         if (event.getState().equals(State.PUBLISHED)) {
-            throw new ValidationException("Событие не должно быть в опубликованно.");
+            throw new EventNotFoundException("Событие не должно быть в опубликованно.");
         }
 
         eventRepository.updateEventStatus(State.CANCELED, eventId);
@@ -182,15 +207,13 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventDto> getAllByUser(Integer userId, Integer from, Integer size) {
-        List<Event> allEvents = eventRepository.findAll();
+    public List<Event> getAllByUser(Integer userId, Integer from, Integer size) {
+        Pageable page = PageRequest.of(from, size);
 
-        List<EventDto> events = allEvents.stream()
-                .filter(s -> Objects.equals(s.getInitiator().getId(), userId))
-                .map(EventMapper::toEventDto)
-                .collect(Collectors.toList());
+        Specification<Event> isUser = userId == null ? null : hasUserId(String.valueOf(userId));
+        Specification<Event> specification = Specification.where(isUser);
 
-        return events;
+        return eventRepository.findAll(specification, page).toList();
     }
 
     @Override
@@ -198,7 +221,7 @@ public class EventServiceImpl implements EventService {
         Event event = (Event) checkOptional(eventRepository.findById(eventDto.getId()));
 
         if (event == null) {
-            throw new NullPointerException("Событие с id " + eventDto.getId() + " не найдено.");
+            throw new EventNotFoundException("Событие с id " + eventDto.getId() + " не найдено.");
         }
 
         if (!Objects.equals(event.getInitiator().getId(), userId)) {
@@ -234,7 +257,7 @@ public class EventServiceImpl implements EventService {
         User user = (User) checkOptional(userRepository.findById(userId));
 
         if (user == null) {
-            throw new NullPointerException(String.format("Пользователь с id %d не найден.", userId));
+            throw new UserIdNotValidException(String.format("Пользователь с id %d не найден.", userId));
         }
 
         Category category = (Category) checkOptional(categoryRepository.findById(eventCreatingDto.getCategory()));
@@ -312,7 +335,7 @@ public class EventServiceImpl implements EventService {
         Event event = (Event) checkOptional(eventRepository.findById(id));
 
         if (event == null) {
-            throw new NullPointerException("Такое событие не найдено.");
+            throw new EventNotFoundException("Такое событие не найдено.");
         }
 
 
@@ -335,7 +358,7 @@ public class EventServiceImpl implements EventService {
         List<EventDto> eventList = new ArrayList<>();
 
         if (allEventList.size() < from) {
-            throw new IndexOutOfBoundsException("Не верно заданы параметры пагинации.");
+            throw new DataException("Не верно заданы параметры пагинации.");
         }
 
         int sum = from + size - 1;
@@ -356,7 +379,7 @@ public class EventServiceImpl implements EventService {
         Compilation compilation = (Compilation) checkOptional(compilationRepository.findById(id));
 
         if (compilation == null) {
-            throw new NullPointerException("Подборка с id " + id + " не найдена.");
+            throw new DataException("Подборка с id " + id + " не найдена.");
         }
 
         return CompilationMapper.toCompilationDto(compilation);
@@ -366,5 +389,9 @@ public class EventServiceImpl implements EventService {
         if (optional.isPresent()) {
             return optional.get();
         } else return null;
+    }
+
+    private Specification<Event> hasUserId(String userId) {
+        return (root, query, builder) -> builder.equal(root.get("initiator"), root.get(userId));
     }
 }
