@@ -4,7 +4,7 @@ import explore.model.Comment;
 import explore.model.dto.CommentDto;
 import explore.model.dto.CommentShortDto;
 
-public class CommentMapper {
+public abstract class CommentMapper {
     public static CommentDto toCommentDto(Comment comment) {
         return new CommentDto(comment.getId(),
                 comment.getComment(),
