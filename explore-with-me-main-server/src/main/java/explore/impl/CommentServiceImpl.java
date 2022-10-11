@@ -20,7 +20,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
 
     @Override
-    public Comment setComment(Integer eventId, Comment comment, Integer userId) {
+    public Comment setComment(int eventId, Comment comment, int userId) {
 
         CommentDto commentDto = CommentMapper.toCommentDto(comment);
 
@@ -28,7 +28,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(Integer userId, Integer commentId, Integer id) throws ValidationException {
+    public void deleteComment(int userId, int commentId, int id) throws ValidationException {
         Comment comment = commentRepository.findById(commentId).get();
 
         if (!Objects.equals(comment.getCommentator().getId(), id)) {
@@ -39,7 +39,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> getEventComments(Integer eventId) {
+    public List<Comment> getEventComments(int eventId) {
 
         return commentRepository.getCommentOfEvent(eventId).stream()
                 .sorted((o1, o2) -> o2.getDateCreate().compareTo(o1.getDateCreate()))
@@ -47,7 +47,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void moderateComment(Integer commentId, Boolean status) {
+    public void moderateComment(int commentId, boolean status) {
         commentRepository.setStatus(status, commentId);
     }
 }

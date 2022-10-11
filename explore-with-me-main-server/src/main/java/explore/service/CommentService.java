@@ -6,16 +6,16 @@ import javax.xml.bind.ValidationException;
 import java.util.List;
 
 public interface CommentService {
-    Comment setComment(Integer eventId,
+    Comment setComment(int eventId,
                           Comment comment,
-                          Integer userId);
+                          int userId);
 
-    void deleteComment(Integer userId,
-                       Integer commentId,
-                       Integer id) throws ValidationException;
+    void deleteComment(int userId,
+                       int commentId,
+                       int id) throws ValidationException;
 
-    List<Comment> getEventComments(Integer eventId);
+    List<Comment> getEventComments(int eventId);
 
-    void moderateComment(Integer commentId,
-                         Boolean status);
+    void moderateComment(int commentId,
+                         boolean status);
 }
